@@ -109,6 +109,34 @@ def repair_keyspace(keyspace, steps=100, verbose=True):
 
     return True
 
+def main():
+    from optparse import OptionParser
+
+    parser = OptionParser()
+    parser.add_option("-k", "--keyspace", dest="keyspace",
+                      help="keyspace to repair", metavar="KEYSPACE")
+
+    parser.add_option("-s", "--steps", dest="steps", type="int", default=100,
+                      help="number of discrete ranges", metavar="STEPS")
+
+    parser.add_option("-q", "--quiet",
+                      action="store_false", dest="verbose", default=True,
+                      help="don't print status messages to stdout")
+
+    (options, args) = parser.parse_args()
+
+    if not options.keyspace:
+        parser.print_help()
+        sys.exit(1)
+
+    if repair_keyspace(options.keyspace, options.steps, options.verbose):
+        sys.exit(0)
+
+    sys.exit(2)
+
+if __name__ == '__main__':
+    main()
+
 # success, ring_tokens, error = get_ring_tokens()
 # success, host_token, error = get_host_token()
 # range_termination = get_range_termination(host_token, ring_tokens)
@@ -119,29 +147,3 @@ def repair_keyspace(keyspace, steps=100, verbose=True):
 # print repr(get_host_token())
 # print repr(get_range_termination(host_token, ring_tokens))
 # print repr(get_sub_range_generator(host_token, range_termination, steps).next())
-
-
-
-from optparse import OptionParser
-
-parser = OptionParser()
-parser.add_option("-k", "--keyspace", dest="keyspace",
-                  help="keyspace to repair", metavar="KEYSPACE")
-
-parser.add_option("-s", "--steps", dest="steps", type="int", default=100,
-                  help="number of discrete ranges", metavar="STEPS")
-
-parser.add_option("-q", "--quiet",
-                  action="store_false", dest="verbose", default=True,
-                  help="don't print status messages to stdout")
-
-(options, args) = parser.parse_args()
-
-if not options.keyspace:
-    parser.print_help()
-    sys.exit(1)
-
-if repair_keyspace(options.keyspace, options.steps, options.verbose):
-    sys.exit(0)
-
-sys.exit(2)
