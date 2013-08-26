@@ -38,3 +38,6 @@ step 0091 repairing range (-7563165070220916164, -7378697629483820648] for keysp
 #### Dependencies
 -   Python 2.5
 -   Cassandra ```nodetool``` must exist in the ```PATH```
+
+#### Limitations
+-   Does not work with vnodes
