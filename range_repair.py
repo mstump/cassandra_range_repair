@@ -62,7 +62,7 @@ def get_sub_range_generator(start, stop, steps=100):
 
 def repair_range(keyspace, start, end):
     success, return_code, cmd, stdout, stderr = \
-        run_command("nodetool", "repair %s -pr -st %s -et %s" % (keyspace, start, end))
+        run_command("nodetool", "repair %s -snapshot -pr -st %s -et %s" % (keyspace, start, end))
 
     return success, cmd, stdout, stderr
 
