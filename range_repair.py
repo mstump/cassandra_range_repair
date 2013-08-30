@@ -1,10 +1,26 @@
 #!/usr/bin/env python
+import operator
+import optparse
 import os
 import re
-import sys
 import subprocess
-import itertools
-import optparse
+import sys
+
+def lrange(num1, num2 = None, step = 1):
+    op = operator.__le__
+
+    if num2 is None:
+        num1, num2 = 0, num1
+    if num2 < num1:
+        if step > 0:
+            num1 = num2
+        op = operator.__gt__
+    elif step < 0:
+        num1 = num2
+
+    while op(num1, num2):
+        yield num1
+        num1 += step
 
 def run_command(command, *args):
     cmd = " ".join([command] + list(args))
@@ -46,19 +62,17 @@ def get_range_termination(token, ring):
             return i
 
     if is_murmur_ring(ring):
-        return 2**63
+        return 2**63 - 1
 
-    return 2**127
+    return 2**127 - 1
 
 def get_sub_range_generator(start, stop, steps=100):
     step_increment = abs(stop - start) / steps
-    for i in itertools.count(start + step_increment, step_increment):
-        if i >= stop:
-            yield start, stop - 1
-            return
-
+    for i in lrange(start + step_increment, stop + 1, step_increment):
         yield start, i
         start = i
+    if start < stop:
+        yield start, stop
 
 def repair_range(keyspace, start, end):
     success, return_code, cmd, stdout, stderr = \

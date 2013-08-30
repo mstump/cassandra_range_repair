@@ -1,7 +1,9 @@
 range_repair.py
 ======================
 
-Python script to repair the primary range of a cassandra node in N discrete steps.
+Python script to repair the primary range of a cassandra node in N discrete steps [using best practices](http://www.datastax.com/dev/blog/advanced-repair-techniques).
+
+
 
 #### Options
 
@@ -20,7 +22,7 @@ Options:
 #### Sample
 
 ```
-⇒ ./range_repair.py -k demo              
+⇒ ./range_repair.py -k demo
 repair over range (-9223372036854775808, 09223372036854775808] with 100 steps for keyspace demo
 step 0100 repairing range (-9223372036854775808, -9038904596117680292] for keyspace demo ...  SUCCESS
 step 0099 repairing range (-9038904596117680292, -8854437155380584776] for keyspace demo ...  SUCCESS
@@ -36,7 +38,7 @@ step 0091 repairing range (-7563165070220916164, -7378697629483820648] for keysp
 ```
 
 #### Dependencies
--   Python 2.5
+-   Python 2.6
 -   Cassandra ```nodetool``` must exist in the ```PATH```
 
 #### Limitations
